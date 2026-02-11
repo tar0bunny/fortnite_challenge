@@ -33,7 +33,9 @@ if __name__ == "__main__":
         sleep(2)
 
     panel = Panel(
-        f"\nID:\t\t{challenge['id']}\nChallenge:\t{challenge['text']}\nDifficulty:\t{challenge['difficulty']}\n",
+        f"\n[bold yellow]CATEGORY[/bold yellow]\t{challenge['id']}\
+            \n[bold yellow]CHALLENGE[/bold yellow]\t{challenge['text']}\
+            \n[bold yellow]DIFFICULTY[/bold yellow]\t{challenge['difficulty']}\n",
         title="[bold red]ACTIVE CHALLENGE[/bold red]",
         title_align="left",
         border_style="red"
