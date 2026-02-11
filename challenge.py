@@ -33,12 +33,13 @@ if __name__ == "__main__":
         sleep(2)
 
     panel = Panel(
-        f"\n[bold yellow]CATEGORY[/bold yellow]\t{challenge['id']}\
-            \n[bold yellow]CHALLENGE[/bold yellow]\t{challenge['text']}\
-            \n[bold yellow]DIFFICULTY[/bold yellow]\t{challenge['difficulty']}\n",
-        title="[bold red]ACTIVE CHALLENGE[/bold red]",
-        title_align="left",
-        border_style="red"
+        f"\n[bold yellow]CATEGORY[/bold yellow]     [cyan]{challenge['id']}[/cyan]\n"
+        f"[bold yellow]CHALLENGE[/bold yellow]    [white]{challenge['text']}[/white]\n"
+        f"[bold yellow]DIFFICULTY[/bold yellow]   [{'red' if challenge['difficulty'] >= 3 else 'green' if challenge['difficulty'] == 1 else 'yellow'}]{'★' * challenge['difficulty']}[/{'red' if challenge['difficulty'] >= 3 else 'green' if challenge['difficulty'] == 1 else 'yellow'}]\n",
+        title="[bold red]⚠ ACTIVE CHALLENGE ⚠[/bold red]",
+        title_align="center",
+        border_style="bold red",
+        padding=(1, 2)
     )
 
     console.print(panel)
