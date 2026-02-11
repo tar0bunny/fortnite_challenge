@@ -1,36 +1,29 @@
+import json
 import random
 from time import sleep
 from rich.console import Console
 from rich.panel import Panel
 from rich.align import Align
 
-drop_challenges = [
-    "Land at named location only",
-    "Edge of map landing",
-    "Pop glider immediately",
-    "Land at closest named location from bus starting point",
-]
 
-combat_challenges = [
-    "No healing allowed",
-    "Must reload after each elimination",
-    "No sprinting unless in the storm",
-    "No aiming down sights"
-]
+COMBAT_PATH = "./challenges/combat.json"
+DROP_PATH = "./challenges/drop.json"
+LOADOUT_PATH = "./challenges/loadout.json"
 
-loadout_challenges = [
-    "No shotguns",
-    "SMGs only",
-    "Gray guns only",
-    "Shotguns only",
-    "Must carry 2 heals at all times",
-    "No movement items"
-]
+
+def build_challenge_list(path):
+    with open(f"{path}", "r") as f:
+        data = json.load(f)
+
+    challenges = data["challenges"]
+    return challenges
 
 
 if __name__ == "__main__":
     console = Console()
-    all_challenges = drop_challenges + combat_challenges + loadout_challenges
+    all_challenges = build_challenge_list(COMBAT_PATH) \
+                    + build_challenge_list(DROP_PATH) \
+                    + build_challenge_list(LOADOUT_PATH)
     challenge = random.choice(all_challenges)
 
     with console.status(
@@ -40,7 +33,7 @@ if __name__ == "__main__":
         sleep(2)
 
     panel = Panel(
-        Align.left(f"[bold]\n{challenge}\n[/bold]", vertical="middle"),
+        f"\nID:\t\t{challenge['id']}\nChallenge:\t{challenge['text']}\nDifficulty:\t{challenge['difficulty']}\n",
         title="[bold red]ACTIVE CHALLENGE[/bold red]",
         title_align="left",
         border_style="red"

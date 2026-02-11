@@ -1,0 +1,24 @@
+{
+    "challenges": [
+        {
+            "id": "DROP_001",
+            "text": "Land at named location only",
+            "difficulty": 1
+        },
+        {
+            "id": "DROP_002",
+            "text": "Edge of map landing",
+            "difficulty": 2
+        },
+        {
+            "id": "DROP_003",
+            "text": "Pop glider immediately",
+            "difficulty": 2
+        },
+        {
+            "id": "DROP_004",
+            "text": "Land at closest named location from bus starting point",
+            "difficulty": 1
+        }
+    ]
+}

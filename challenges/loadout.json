@@ -1,0 +1,34 @@
+{
+    "challenges": [
+        {
+            "id": "LOADOUT_001",
+            "text": "No shotguns",
+            "difficulty": 2
+        },
+        {
+            "id": "LOADOUT_002",
+            "text": "SMGs only",
+            "difficulty": 3
+        },
+        {
+            "id": "LOADOUT_003",
+            "text": "Gray guns only",
+            "difficulty": 3
+        },
+        {
+            "id": "LOADOUT_004",
+            "text": "Shotguns only",
+            "difficulty": 3
+        },
+        {
+            "id": "LOADOUT_005",
+            "text": "Must carry 2 heals at all times",
+            "difficulty": 1
+        },
+        {
+            "id": "LOADOUT_006",
+            "text": "No movement items",
+            "difficulty": 2
+        }
+    ]
+}

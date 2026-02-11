@@ -1,0 +1,24 @@
+{
+    "challenges": [
+        {
+            "id": "COMBAT_001",
+            "text": "No healing allowed",
+            "difficulty": 2
+        },
+        {
+            "id": "COMBAT_002",
+            "text": "Must reload after each elimination",
+            "difficulty": 2
+        },
+        {
+            "id": "COMBAT_003",
+            "text": "No sprinting unless in the storm",
+            "difficulty": 2
+        },
+        {
+            "id": "COMBAT_004",
+            "text": "No aiming down sights",
+            "difficulty": 3
+        }
+    ]
+}
