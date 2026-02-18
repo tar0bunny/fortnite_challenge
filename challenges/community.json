@@ -1,0 +1,14 @@
+{
+    "challenges": [
+        {
+            "id": "COMMUNITY_001",
+            "text": "No shields",
+            "difficulty": 2
+        },
+        {
+            "id": "COMMUNITY_002",
+            "text": "Aggro challenge. Only push.",
+            "difficulty": 2
+        }
+    ]
+}
