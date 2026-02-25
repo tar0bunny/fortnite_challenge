@@ -1,28 +1,27 @@
 import json
 import random
-import sys
-from time import sleep
-from rich.console import Console
-from rich.panel import Panel
-from rich.align import Align
+import threading
+import webbrowser
+from pathlib import Path
+from flask import Flask, jsonify, request, send_file
 
-
-COMBAT_PATH = "./challenges/combat.json"
-DROP_PATH = "./challenges/drop.json"
+COMBAT_PATH  = "./challenges/combat.json"
+DROP_PATH    = "./challenges/drop.json"
 LOADOUT_PATH = "./challenges/loadout.json"
-STATS_PATH = "./stats.json"
+COMMUNITY_PATH = "./challenges/community.json"
+STATS_PATH   = "./stats.json"
+HTML_PATH    = "./templates/index.html"
 
+app = Flask(__name__)
 
+# HELPERS
 def build_challenge_list(path):
-    with open(f"{path}", "r") as f:
-        data = json.load(f)
-
-    challenges = data["challenges"]
-    return challenges
+    with open(path) as f:
+        return json.load(f)["challenges"]
 
 
 def load_stats():
-    with open(STATS_PATH, "r") as f:
+    with open(STATS_PATH) as f:
         return json.load(f)
 
 
@@ -31,80 +30,49 @@ def save_stats(stats):
         json.dump(stats, f, indent=4)
 
 
-if __name__ == "__main__":
-    console = Console()
+# ROUTES
+@app.route("/")
+def index():
+    return send_file(HTML_PATH)
 
-    # Build challenge pool
+
+@app.route("/data")
+def data():
+    """Sends challenge + stats to the page on load."""
     all_challenges = (
         build_challenge_list(COMBAT_PATH)
         + build_challenge_list(DROP_PATH)
         + build_challenge_list(LOADOUT_PATH)
+        + build_challenge_list(COMMUNITY_PATH)
     )
-
     challenge = random.choice(all_challenges)
-
-    # Loading animation
-    with console.status(
-        "[bold cyan]GENERATING CHALLENGE[/bold cyan]...",
-        spinner="dots"
-    ):
-        sleep(2)
-
-
-    # Active Challenge Panel
-    challenge_panel = Panel(
-        f"\n[bold yellow]CATEGORY[/bold yellow]     [cyan]{challenge['id']}[/cyan]\n"
-        f"[bold yellow]CHALLENGE[/bold yellow]    [white]{challenge['text']}[/white]\n"
-        f"[bold yellow]DIFFICULTY[/bold yellow]   "
-        f"[bold yellow]{'★ ' * challenge['difficulty']}[bold yellow]\n",
-        title="[bold red]⚠ ACTIVE CHALLENGE ⚠[/bold red]",
-        title_align="center",
-        border_style="bold red",
-        padding=(1, 2)
-    )
-
-    console.print(challenge_panel)
-
-    # Load stats
     stats = load_stats()
+    return jsonify({
+        "category":   challenge["id"],
+        "text":       challenge["text"],
+        "difficulty": challenge["difficulty"],
+        "wins":       stats["wins"],
+        "losses":     stats["losses"],
+    })
 
-    # Stats Panel
-    stats_panel = Panel(
-        f"\n[bold green]🏆 Wins:[/bold green]   {stats['wins']}\n"
-        f"[bold red]💀 Losses:[/bold red] {stats['losses']}\n",
-        title="[bold cyan]📊 RECORD[/bold cyan]",
-        border_style="cyan",
-        padding=(1, 2)
-    )
 
-    console.print(stats_panel)
+@app.route("/result", methods=["POST"])
+def result():
+    """Receives win/loss/cancel from the page and saves to stats.json."""
+    body = request.get_json()
+    outcome = body.get("result")  # "y", "n", or "c"
 
-    # Ask for result
-    result = input("\nDid you win? (y/n/c): ").strip().lower()
-
-    if result == "y":
+    stats = load_stats()
+    if outcome == "y":
         stats["wins"] += 1
-        console.print("[bold green]WIN RECORDED![/bold green]")
-    elif result == "n":
+    elif outcome == "n":
         stats["losses"] += 1
-        console.print("[bold red]LOSS RECORDED![/bold red]")
-    elif result == "c":
-        console.print("[bold yellow]Challenge cancelled. No changes made.[/bold yellow]")
-        sys.exit()
-    else:
-        console.print("[yellow]Invalid input. No result recorded.[/yellow]")
 
     save_stats(stats)
+    return jsonify({"wins": stats["wins"], "losses": stats["losses"]})
 
-    # Reload + Display Updated Stats
-    updated_stats = load_stats()
 
-    updated_panel = Panel(
-        f"\n[bold green]🏆 Wins:[/bold green]   {updated_stats['wins']}\n"
-        f"[bold red]💀 Losses:[/bold red] {updated_stats['losses']}\n",
-        title="[bold cyan]📊 UPDATED RECORD[/bold cyan]",
-        border_style="bold cyan",
-        padding=(1, 2)
-    )
-
-    console.print(updated_panel)
+# MAIN
+if __name__ == "__main__":
+    threading.Timer(0.8, lambda: webbrowser.open("http://localhost:5000")).start()
+    app.run(port=5000)

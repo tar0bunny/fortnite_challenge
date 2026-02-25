@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>✧ Fortnite Challenge ✧</title>
+      <style>
+         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+         * { box-sizing: border-box; margin: 0; padding: 0; }
+         body {
+         background: radial-gradient(ellipse at top, #1e0e2e 0%, #0d0d1a 70%);
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         min-height: 100vh;
+         padding: 40px 20px;
+         font-family: 'Share Tech Mono', 'Courier New', monospace;
+         overflow-x: hidden;
+         }
+         .bg-deco {
+         position: fixed;
+         pointer-events: none;
+         opacity: 0.12;
+         animation: floatDeco linear infinite;
+         }
+         @keyframes floatDeco {
+         0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+         10% { opacity: 0.12; }
+         90% { opacity: 0.12; }
+         100% { transform: translateY(-60px) rotate(360deg); opacity: 0; }
+         }
+         .terminal {
+         background: #0d0d1a;
+         border-radius: 12px;
+         width: 100%;
+         max-width: 620px;
+         overflow: hidden;
+         box-shadow: 0 0 50px rgba(201,168,232,0.25), 0 0 100px rgba(255,183,197,0.1);
+         position: relative;
+         z-index: 1;
+         }
+         .titlebar {
+         background: linear-gradient(90deg, #1a0d2e, #1e1e2e, #0d1a2e);
+         padding: 10px 14px;
+         display: flex;
+         align-items: center;
+         gap: 8px;
+         border-bottom: 1px solid #2a1a3e;
+         }
+         .dot { width: 12px; height: 12px; border-radius: 50%; }
+         .dot.red { background: #ff5f57; }
+         .dot.yellow { background: #ffbd2e; }
+         .dot.green { background: #28ca41; }
+         .titlebar span {
+         color: #C9A8E8;
+         font-size: 12px;
+         margin: 0 auto;
+         opacity: 0.7;
+         letter-spacing: 2px;
+         }
+         .body { padding: 24px 24px 28px; line-height: 1.75; font-size: 14px; }
+         .pink { color: #FFB7C5; }
+         .purple { color: #C9A8E8; }
+         .blue { color: #A8D8EA; }
+         .gold { color: #FFD6E7; }
+         .white { color: #FFF0F5; }
+         .bold { font-weight: 700; }
+         /* ── Panels ── */
+         .panel {
+         border-radius: 6px;
+         margin: 8px 0 16px;
+         position: relative;
+         }
+         .panel-purple {
+         border: 1px solid #C9A8E8;
+         box-shadow: 0 0 14px rgba(201,168,232,0.2), inset 0 0 20px rgba(201,168,232,0.04);
+         }
+         .panel-blue {
+         border: 1px solid #A8D8EA;
+         box-shadow: 0 0 14px rgba(168,216,234,0.2), inset 0 0 20px rgba(168,216,234,0.04);
+         }
+         .panel-title-center {
+         position: absolute; top: -11px; left: 50%;
+         transform: translateX(-50%);
+         background: #0d0d1a; padding: 0 10px;
+         white-space: nowrap; font-size: 13px; letter-spacing: 1px;
+         }
+         .panel-title-left {
+         position: absolute; top: -11px; left: 16px;
+         background: #0d0d1a; padding: 0 10px;
+         font-size: 13px; letter-spacing: 1px;
+         }
+         .panel-body { padding: 16px 20px 12px; margin-top: 4px; }
+         .row { margin: 5px 0; }
+         .corner { position: absolute; font-size: 10px; opacity: 0.5; line-height: 1; }
+         .corner.tl { top: -6px; left: 6px; }
+         .corner.tr { top: -6px; right: 6px; }
+         .corner.bl { bottom: -6px; left: 6px; }
+         .corner.br { bottom: -6px; right: 6px; }
+         .stars { letter-spacing: 4px; text-shadow: 0 0 8px #FFB7C5, 0 0 16px #FFB7C580; }
+         /* ── Generating screen ── */
+         #screen-generating { text-align: center; padding: 40px 0 30px; }
+         .gen-title { font-size: 18px; font-weight: 700; letter-spacing: 3px; margin-bottom: 24px; }
+         .spinner-ring {
+         width: 48px; height: 48px;
+         border: 3px solid rgba(255,183,197,0.15);
+         border-top-color: #FFB7C5;
+         border-right-color: #C9A8E8;
+         border-radius: 50%;
+         margin: 0 auto 24px;
+         animation: spin 0.9s linear infinite;
+         }
+         @keyframes spin { to { transform: rotate(360deg); } }
+         .gen-sub { font-size: 11px; letter-spacing: 2px; opacity: 0.5; }
+         @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+         .gen-sub { animation: pulse 1.6s ease-in-out infinite; }
+         /* ── Result badge ── */
+         .result-badge {
+         display: inline-block;
+         padding: 5px 18px; border-radius: 20px;
+         font-size: 13px; font-weight: 700; letter-spacing: 2px;
+         margin: 0 0 16px;
+         animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+         }
+         .badge-win { background: rgba(255,183,197,0.12); border: 1px solid #FFB7C5; color: #FFB7C5; box-shadow: 0 0 16px rgba(255,183,197,0.3); }
+         .badge-loss { background: rgba(201,168,232,0.12); border: 1px solid #C9A8E8; color: #C9A8E8; box-shadow: 0 0 16px rgba(201,168,232,0.3); }
+         .badge-cancel { background: rgba(168,216,234,0.12); border: 1px solid #A8D8EA; color: #A8D8EA; box-shadow: 0 0 16px rgba(168,216,234,0.3); }
+         @keyframes popIn { 0%{transform:scale(0.7);opacity:0} 100%{transform:scale(1);opacity:1} }
+         /* ── Buttons ── */
+         .btn-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+         .btn {
+         flex: 1; min-width: 80px;
+         padding: 10px 0; border-radius: 8px;
+         font-family: 'Share Tech Mono', monospace;
+         font-size: 13px; font-weight: 700; letter-spacing: 2px;
+         cursor: pointer; border: 1px solid; transition: all 0.15s;
+         background: transparent;
+         }
+         .btn-win { border-color: #FFB7C5; color: #FFB7C5; }
+         .btn-win:hover { background: rgba(255,183,197,0.12); box-shadow: 0 0 14px rgba(255,183,197,0.25); }
+         .btn-loss { border-color: #C9A8E8; color: #C9A8E8; }
+         .btn-loss:hover { background: rgba(201,168,232,0.12); box-shadow: 0 0 14px rgba(201,168,232,0.25); }
+         .btn-cancel { border-color: #A8D8EA; color: #A8D8EA; }
+         .btn-cancel:hover { background: rgba(168,216,234,0.12); box-shadow: 0 0 14px rgba(168,216,234,0.25); }
+         .btn-regen { border-color: #FFD6E7; color: #FFD6E7; }
+         .btn-regen:hover { background: rgba(255,214,231,0.12); box-shadow: 0 0 14px rgba(255,214,231,0.25); }
+         /* spinning state for regen button */
+         .btn-regen.spinning { opacity: 0.5; pointer-events: none; }
+         /* ── Screens ── */
+         .screen { display: none; }
+         .screen.active { display: block; }
+         .challenge-text { animation: shimmer 3s ease-in-out infinite; }
+         @keyframes shimmer { 0%,100%{opacity:1} 50%{opacity:0.75} }
+         .prompt { color: #FFF0F5; opacity: 0.6; font-size: 12px; margin-bottom: 6px; letter-spacing: 1px; }
+      </style>
+   </head>
+   <body>
+      <script>
+         const decos = ['♡','✦','★','✿','◇','✧','♪'];
+         for (let i = 0; i < 18; i++) {
+         const el = document.createElement('div');
+         el.className = 'bg-deco';
+         el.textContent = decos[Math.floor(Math.random() * decos.length)];
+         el.style.left = Math.random() * 100 + 'vw';
+         el.style.animationDuration = (12 + Math.random() * 20) + 's';
+         el.style.animationDelay = (-Math.random() * 20) + 's';
+         el.style.fontSize = (12 + Math.random() * 14) + 'px';
+         el.style.color = ['#FFB7C5','#C9A8E8','#A8D8EA'][Math.floor(Math.random()*3)];
+         document.body.appendChild(el);
+         }
+      </script>
+      <div class="terminal">
+         <div class="titlebar">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <span>✧ fortnite challenge ✧</span>
+         </div>
+         <div class="body">
+            <!-- GENERATING -->
+            <div class="screen active" id="screen-generating">
+               <div class="gen-title pink bold">✧ generating your challenge ✧</div>
+               <div class="spinner-ring"></div>
+               <div class="gen-sub purple">please wait...</div>
+            </div>
+            <!-- CHALLENGE -->
+            <div class="screen" id="screen-challenge">
+               <div class="panel panel-purple">
+                  <div class="corner tl pink">♡</div>
+                  <div class="corner tr pink">♡</div>
+                  <div class="corner bl pink">♡</div>
+                  <div class="corner br pink">♡</div>
+                  <div class="panel-title-center bold pink">♡ ACTIVE CHALLENGE ♡</div>
+                  <div class="panel-body">
+                     <div class="row"><span class="bold gold">CATEGORY </span>&nbsp;&nbsp;&nbsp;<span class="blue" id="val-category"></span></div>
+                     <div class="row"><span class="bold gold">CHALLENGE </span>&nbsp;&nbsp;&nbsp;<span class="white challenge-text" id="val-text"></span></div>
+                     <div class="row"><span class="bold gold">DIFFICULTY</span>&nbsp;&nbsp;&nbsp;<span class="bold pink stars" id="val-difficulty"></span></div>
+                  </div>
+               </div>
+               <div class="panel panel-blue" style="margin-top:18px">
+                  <div class="corner tl blue">✦</div>
+                  <div class="corner tr blue">✦</div>
+                  <div class="corner bl blue">✦</div>
+                  <div class="corner br blue">✦</div>
+                  <div class="panel-title-left bold blue">✦ RECORD ✦</div>
+                  <div class="panel-body">
+                     <div class="row"><span class="bold pink">🏆 Wins:&nbsp;&nbsp;</span> <span class="white" id="val-wins"></span></div>
+                     <div class="row"><span class="bold purple">💀 Losses:</span> <span class="white" id="val-losses"></span></div>
+                  </div>
+               </div>
+               <div class="btn-row">
+                  <button class="btn btn-win" onclick="submitResult('y')">✧ WIN</button>
+                  <button class="btn btn-loss" onclick="submitResult('n')">✦ LOSS</button>
+                  <button class="btn btn-cancel" onclick="submitResult('c')">♡ CANCEL</button>
+               </div>
+               <div class="btn-row">
+                  <button class="btn btn-regen" id="btn-regen" onclick="regenerate()">✦ regenerate</button>
+               </div>
+            </div>
+            <!-- RESULT -->
+            <div class="screen" id="screen-result">
+               <div id="result-badge"></div>
+               <div class="panel panel-blue">
+                  <div class="corner tl blue">✦</div>
+                  <div class="corner tr blue">✦</div>
+                  <div class="corner bl blue">✦</div>
+                  <div class="corner br blue">✦</div>
+                  <div class="panel-title-left bold blue">✦ UPDATED RECORD ✦</div>
+                  <div class="panel-body">
+                     <div class="row"><span class="bold pink">🏆 Wins:&nbsp;&nbsp;</span> <span class="white" id="val-wins-updated"></span></div>
+                     <div class="row"><span class="bold purple">💀 Losses:</span> <span class="white" id="val-losses-updated"></span></div>
+                  </div>
+               </div>
+               <button class="btn btn-cancel" style="width:100%; margin-top: 16px;" onclick="goBack()">♡ back</button>
+            </div>
+         </div>
+      </div>
+      <script>
+         let DATA = {};
+         
+         function show(id) {
+           document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+           document.getElementById(id).classList.add('active');
+         }
+         
+         function populateChallenge(data) {
+           document.getElementById('val-category').textContent = data.category;
+           document.getElementById('val-text').textContent = data.text;
+           document.getElementById('val-difficulty').textContent = '★ '.repeat(data.difficulty).trim();
+           document.getElementById('val-wins').textContent = data.wins;
+           document.getElementById('val-losses').textContent = data.losses;
+         }
+         
+         async function fetchChallenge() {
+           const res = await fetch('/data');
+           DATA = await res.json();
+           populateChallenge(DATA);
+         }
+         
+         async function init() {
+           await fetchChallenge();
+           setTimeout(() => show('screen-challenge'), 2000);
+         }
+         
+         async function regenerate() {
+           const btn = document.getElementById('btn-regen');
+           btn.classList.add('spinning');
+           btn.textContent = '✦ loading...';
+
+           // Briefly flash the generating screen for feedback
+           show('screen-generating');
+           await fetchChallenge();
+
+           setTimeout(() => {
+             show('screen-challenge');
+             btn.classList.remove('spinning');
+             btn.textContent = '✦ regenerate';
+           }, 800);
+         }
+         
+         function goBack() {
+           show('screen-challenge');
+         }
+         
+         async function submitResult(result) {
+           const res = await fetch('/result', {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ result })
+           });
+           const updated = await res.json();
+         
+           let badge = '';
+           if (result === 'y') {
+             badge = '<div class="result-badge badge-win">✧ WIN RECORDED ✧</div>';
+           } else if (result === 'n') {
+             badge = '<div class="result-badge badge-loss">✦ loss recorded ✦</div>';
+           } else {
+             badge = '<div class="result-badge badge-cancel">♡ challenge cancelled ♡</div>';
+           }
+         
+           document.getElementById('result-badge').innerHTML = badge;
+           document.getElementById('val-wins-updated').textContent = updated.wins;
+           document.getElementById('val-losses-updated').textContent = updated.losses;
+         
+           show('screen-result');
+         }
+         
+         init();
+      </script>
+   </body>
+</html>>
