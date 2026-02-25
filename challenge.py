@@ -2,6 +2,7 @@ import json
 import random
 import threading
 import webbrowser
+import sqlite3
 from pathlib import Path
 from flask import Flask, jsonify, request, send_file
 
@@ -9,7 +10,7 @@ COMBAT_PATH  = "./challenges/combat.json"
 DROP_PATH    = "./challenges/drop.json"
 LOADOUT_PATH = "./challenges/loadout.json"
 COMMUNITY_PATH = "./challenges/community.json"
-STATS_PATH   = "./stats.json"
+DB_PATH   = "./stats.db"
 HTML_PATH    = "./templates/index.html"
 
 app = Flask(__name__)
@@ -20,14 +21,35 @@ def build_challenge_list(path):
         return json.load(f)["challenges"]
 
 
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS stats (
+            id INTEGER PRIMARY KEY,
+            wins INTEGER NOT NULL,
+            losses INTEGER NOT NULL
+        )
+    """)
+
+    cur.execute("SELECT COUNT(*) FROM stats")
+    if cur.fetchone()[0] == 0:
+        cur.execute("INSERT INTO stats (wins, losses) VALUES (0, 0)")
+
+    conn.commit()
+    conn.close()
+
+
 def load_stats():
-    with open(STATS_PATH) as f:
-        return json.load(f)
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
 
+    cur.execute("SELECT wins, losses FROM stats WHERE id = 1")
+    wins, losses = cur.fetchone()
 
-def save_stats(stats):
-    with open(STATS_PATH, "w") as f:
-        json.dump(stats, f, indent=4)
+    conn.close()
+    return {"wins": wins, "losses": losses}
 
 
 # ROUTES
@@ -58,21 +80,29 @@ def data():
 
 @app.route("/result", methods=["POST"])
 def result():
-    """Receives win/loss/cancel from the page and saves to stats.json."""
     body = request.get_json()
-    outcome = body.get("result")  # "y", "n", or "c"
+    outcome = body.get("result")
 
-    stats = load_stats()
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
     if outcome == "y":
-        stats["wins"] += 1
+        cur.execute("UPDATE stats SET wins = wins + 1 WHERE id = 1")
     elif outcome == "n":
-        stats["losses"] += 1
+        cur.execute("UPDATE stats SET losses = losses + 1 WHERE id = 1")
 
-    save_stats(stats)
-    return jsonify({"wins": stats["wins"], "losses": stats["losses"]})
+    conn.commit()
+
+    cur.execute("SELECT wins, losses FROM stats WHERE id = 1")
+    wins, losses = cur.fetchone()
+
+    conn.close()
+
+    return jsonify({"wins": wins, "losses": losses})
 
 
 # MAIN
 if __name__ == "__main__":
+    init_db()
     threading.Timer(0.8, lambda: webbrowser.open("http://localhost:5000")).start()
     app.run(port=5000)
