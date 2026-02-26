@@ -104,5 +104,4 @@ def result():
 # MAIN
 if __name__ == "__main__":
     init_db()
-    threading.Timer(0.8, lambda: webbrowser.open("http://localhost:5000")).start()
-    app.run(port=5000)
+    app.run()
