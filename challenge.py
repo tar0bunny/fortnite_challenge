@@ -1,7 +1,5 @@
 import json
 import random
-import threading
-import webbrowser
 import sqlite3
 from pathlib import Path
 from flask import Flask, jsonify, request, send_file
@@ -10,7 +8,8 @@ COMBAT_PATH  = "./challenges/combat.json"
 DROP_PATH    = "./challenges/drop.json"
 LOADOUT_PATH = "./challenges/loadout.json"
 COMMUNITY_PATH = "./challenges/community.json"
-DB_PATH   = "./stats.db"
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / "stats.db"
 HTML_PATH    = "./templates/index.html"
 
 app = Flask(__name__)
@@ -22,7 +21,7 @@ def build_challenge_list(path):
 
 
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
     cur = conn.cursor()
 
     cur.execute("""
