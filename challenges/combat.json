@@ -19,6 +19,11 @@
             "id": "COMBAT_004",
             "text": "No aiming down sights",
             "difficulty": 3
+        },
+        {
+            "id": "COMBAT_005",
+            "text": "Emote every kill",
+            "difficulty": 3
         }
     ]
 }
