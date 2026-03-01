@@ -252,9 +252,14 @@
          }
          
          async function fetchChallenge() {
-           const res = await fetch('/data');
-           DATA = await res.json();
-           populateChallenge(DATA);
+         try {
+            const res = await fetch('data');
+            if (!res.ok) throw new Error(res.status);
+            DATA = await res.json();
+            populateChallenge(DATA);
+         } catch (e) {
+            document.querySelector('.gen-sub').textContent = 'error loading challenge ✦';
+         }
          }
          
          async function init() {
@@ -283,7 +288,7 @@
          }
          
          async function submitResult(result) {
-           const res = await fetch('/result', {
+           const res = await fetch('result', {
              method: 'POST',
              headers: { 'Content-Type': 'application/json' },
              body: JSON.stringify({ result })
