@@ -29,6 +29,61 @@
             "id": "LOADOUT_006",
             "text": "No movement items",
             "difficulty": 2
+        },
+        {
+            "id": "LOADOUT_007",
+            "text": "No AR allowed",
+            "difficulty": 2
+        },
+        {
+            "id": "LOADOUT_008",
+            "text": "Snipers only",
+            "difficulty": 4
+        },
+        {
+            "id": "LOADOUT_009",
+            "text": "Shotguns only",
+            "difficulty": 3
+        },
+        {
+            "id": "LOADOUT_010",
+            "text": "First weapon you pick up must stay in your loadout all game",
+            "difficulty": 2
+        },
+        {
+            "id": "LOADOUT_011",
+            "text": "No mythics or exotics",
+            "difficulty": 1
+        },
+        {
+            "id": "LOADOUT_012",
+            "text": "You may only carry one weapon",
+            "difficulty": 5
+        },
+        {
+            "id": "LOADOUT_013",
+            "text": "After every elimination, drop one item",
+            "difficulty": 3
+        },
+        {
+            "id": "LOADOUT_014",
+            "text": "Floor loot only – no chest loot allowed",
+            "difficulty": 3
+        },
+        {
+            "id": "LOADOUT_015",
+            "text": "First 5 items you see are your full loadout",
+            "difficulty": 4
+        },
+        {
+            "id": "LOADOUT_016",
+            "text": "Single fire only – no automatic weapons",
+            "difficulty": 3
+        },
+        {
+            "id": "LOADOUT_017",
+            "text": "You cannot rearrange inventory slots",
+            "difficulty": 2
         }
     ]
 }

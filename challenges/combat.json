@@ -24,6 +24,46 @@
             "id": "COMBAT_005",
             "text": "Emote every kill",
             "difficulty": 3
+        },
+        {
+            "id": "COMBAT_006",
+            "text": "First weapon you pick up is the only one you can use for eliminations",
+            "difficulty": 3
+        },
+        {
+            "id": "COMBAT_007",
+            "text": "Once you start spraying, you can't stop until the clip is empty",
+            "difficulty": 2
+        },
+        {
+            "id": "COMBAT_008",
+            "text": "You must aim down sights for every shot",
+            "difficulty": 2
+        },
+        {
+            "id": "COMBAT_009",
+            "text": "No finishing knocked players – let them get revived",
+            "difficulty": 4
+        },
+        {
+            "id": "COMBAT_010",
+            "text": "Once you tag someone, you must chase them",
+            "difficulty": 3
+        },
+        {
+            "id": "COMBAT_011",
+            "text": "You must emote before eliminating a player",
+            "difficulty": 4
+        },
+        {
+            "id": "COMBAT_012",
+            "text": "You must use your opponent's weapon after every elimination",
+            "difficulty": 3
+        },
+        {
+            "id": "COMBAT_013",
+            "text": "Drop your best gun after each elimination",
+            "difficulty": 3
         }
     ]
 }

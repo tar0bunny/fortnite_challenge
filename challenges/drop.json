@@ -19,6 +19,36 @@
             "id": "DROP_004",
             "text": "Land at closest named location from bus starting point",
             "difficulty": 1
+        },
+        {
+            "id": "DROP_005",
+            "text": "Land as close to the center of the map as possible",
+            "difficulty": 2
+        },
+        {
+            "id": "DROP_006",
+            "text": "You cannot land at a named location",
+            "difficulty": 2
+        },
+        {
+            "id": "DROP_007",
+            "text": "Direct vertical drop – no gliding sideways",
+            "difficulty": 3
+        },
+        {
+            "id": "DROP_008",
+            "text": "Jump the moment you can",
+            "difficulty": 2
+        },
+        {
+            "id": "DROP_009",
+            "text": "You must land in water",
+            "difficulty": 3
+        },
+        {
+            "id": "DROP_010",
+            "text": "Land on a tree",
+            "difficulty": 3
         }
     ]
 }
