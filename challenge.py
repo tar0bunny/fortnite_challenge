@@ -109,8 +109,7 @@ def result():
 
     return jsonify({"wins": wins, "losses": losses})
 
-
-# MAIN
 init_db()
+# MAIN
 if __name__ == "__main__":
     app.run()
